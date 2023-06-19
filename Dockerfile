@@ -1,14 +1,30 @@
-FROM golang:1.18-alpine
+FROM golang:1.19-buster as builder
 
+# Create and change to the app directory.
 WORKDIR /app
 
-COPY go.mod ./
+# Retrieve application dependencies.
+# This allows the container build to reuse cached dependencies.
+# Expecting to copy go.mod and if present go.sum.
+COPY go.* ./
 RUN go mod download
 
-COPY *.go ./
+# Copy local code to the container image.
+COPY . ./
 
-RUN go build -o /auth-service
+# Build the binary.
+RUN go build -v -o server
 
-EXPOSE 8080
+# Use the official Debian slim image for a lean production container.
+# https://hub.docker.com/_/debian
+# https://docs.docker.com/develop/develop-images/multistage-build/#use-multi-stage-builds
+FROM debian:buster-slim
+RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
 
-CMD [ "/auth-service" ]
+# Copy the binary to the production image from the builder stage.
+COPY --from=builder /app/server /app/server
+
+# Run the web service on container startup.
+CMD ["/app/server"]
