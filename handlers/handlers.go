@@ -235,11 +235,11 @@ func AdminIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func UserIndex(w http.ResponseWriter, r *http.Request) {
-	if r.Header.Get("Role") == "user" || r.Header.Get("Role") == "admin" {
+	if r.Header.Get("Role") != "user" || r.Header.Get("Role") != "admin" {
 		w.Write([]byte("Not Authorized."))
 		return
 	}
-	w.Write([]byte("Welcome, User."))
+	w.Write([]byte("Welcome, User. and Admin"))
 }
 
 //check whether user is authorized or not
