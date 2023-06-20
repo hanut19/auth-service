@@ -28,3 +28,6 @@ COPY --from=builder /app/server /app/server
 
 # Run the web service on container startup.
 CMD ["/app/server"]
+
+#EXPOSE $PORT
+EXPOSE 8080
