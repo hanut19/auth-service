@@ -2,9 +2,9 @@ package database
 
 import (
 	"auth-service/constants"
+	"auth-service/logger"
 	"context"
 	"fmt"
-	"log"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -21,13 +21,15 @@ func Connection() *mongo.Client {
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
-		log.Fatal(err)
+		//log.Fatal(err)
+		logger.ErrorLogger.Printf("DB Connect: %s", err.Error())
 	}
 
 	// Check the connection
 	err = client.Ping(context.TODO(), nil)
 	if err != nil {
-		log.Fatal(err)
+		//log.Fatal(err)
+		logger.ErrorLogger.Printf("DB: %s", err.Error())
 	}
 
 	fmt.Println("Connected to MongoDB!")
@@ -40,7 +42,8 @@ func CloseClientDB(client *mongo.Client) {
 
 	err := client.Disconnect(context.TODO())
 	if err != nil {
-		log.Fatal(err)
+		//log.Fatal(err)
+		logger.ErrorLogger.Printf("DB CLOSE: %s", err.Error())
 	}
 
 	// TODO optional you can log your closed MongoDB client

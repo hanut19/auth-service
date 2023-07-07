@@ -1,0 +1,5 @@
+2023/07/06 12:46:48 logger.go:24: LogFile : logs/logs.log
+ERROR: 2023/07/06 18:41:49 handlers.go:162: SignIn: Username or Password is incorrect
+ERROR: 2023/07/06 18:46:50 handlers.go:162: SignIn: Username or Password is incorrect
+ERROR: 2023/07/07 11:16:58 handlers.go:108: SignUp: Duplicate Record
+ERROR: 2023/07/07 11:17:43 handlers.go:162: SignIn: Username or Password is incorrect
